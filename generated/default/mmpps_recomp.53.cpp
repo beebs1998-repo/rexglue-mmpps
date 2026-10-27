@@ -23969,6 +23969,14 @@ loc_82434850:
 	return;
 }
 
+DEFINE_REX_FUNC(sub_82434930) {
+	REX_FUNC_PROLOGUE();
+	// addi r3,r3,32
+	ctx.r3.s64 = ctx.r3.s64 + 32;
+	// blr 
+	return;
+}
+
 DEFINE_REX_FUNC(sub_82434F80) {
 	REX_FUNC_PROLOGUE();
 	PPCRegister temp{};
@@ -30062,6 +30070,17 @@ loc_8251B15C:
 	ctx.r1.s64 = ctx.r1.s64 + 208;
 	// b 0x82204290
 	__restgprlr_18(ctx, base);
+	return;
+}
+
+DEFINE_REX_FUNC(sub_825231A0) {
+	REX_FUNC_PROLOGUE();
+	// li r10,10
+	ctx.r10.s64 = 10;
+	// li r9,2
+	ctx.r9.s64 = 2;
+	// b 0x82523100
+	sub_82523100(ctx, base);
 	return;
 }
 

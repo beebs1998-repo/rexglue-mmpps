@@ -18,6 +18,7 @@ DECLARE_REX_FUNC(__restgprlr_20);
 DECLARE_REX_FUNC(__restgprlr_21);
 DECLARE_REX_FUNC(__restgprlr_22);
 DECLARE_REX_FUNC(__restgprlr_23);
+DECLARE_REX_FUNC(__restgprlr_24);
 DECLARE_REX_FUNC(__restgprlr_25);
 DECLARE_REX_FUNC(__restgprlr_26);
 DECLARE_REX_FUNC(__restgprlr_27);

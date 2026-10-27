@@ -3,6 +3,7 @@
 #include "mmpps_pch.h"
 
 DECLARE_REX_FUNC(__imp__ExCreateThread);
+DECLARE_REX_FUNC(__imp__KeBugCheck);
 DECLARE_REX_FUNC(__imp__KeGetCurrentProcessType);
 DECLARE_REX_FUNC(__imp__RtlCompareMemoryUlong);
 DECLARE_REX_FUNC(__imp__RtlEnterCriticalSection);
@@ -105,6 +106,7 @@ DECLARE_REX_FUNC(sub_82203A90);
 DECLARE_REX_FUNC(sub_82203C68);
 DECLARE_REX_FUNC(sub_82203D80);
 DECLARE_REX_FUNC(sub_82204C50);
+DECLARE_REX_FUNC(sub_82205098);
 DECLARE_REX_FUNC(sub_82209DF0);
 DECLARE_REX_FUNC(sub_8220A3D8);
 DECLARE_REX_FUNC(sub_8220A3F8);

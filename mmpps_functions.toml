@@ -9,3 +9,103 @@
 # either (same resolution dfkbl/mushi/dfkr use for their curated ep seeds).
 [functions."0x8222F010"]
 name = "sub_8222F010"
+
+# triage bootstrap 2026-10-27 - unresolved-call/branch targets (dfkr iter-9 precedent),
+# registered as functions so the recomp graph can name them properly.
+[functions."0x8218d07c"]
+name = "sub_8218d07c"
+
+[functions."0x8218d088"]
+name = "sub_8218d088"
+
+[functions."0x8218d090"]
+name = "sub_8218d090"
+
+[functions."0x821d35dc"]
+name = "sub_821d35dc"
+
+[functions."0x821d35fc"]
+name = "sub_821d35fc"
+
+[functions."0x821d360c"]
+name = "sub_821d360c"
+
+[functions."0x821d3628"]
+name = "sub_821d3628"
+
+[functions."0x821d3648"]
+name = "sub_821d3648"
+
+[functions."0x821d3680"]
+name = "sub_821d3680"
+
+[functions."0x821d36d0"]
+name = "sub_821d36d0"
+
+[functions."0x821d38e4"]
+name = "sub_821d38e4"
+
+[functions."0x821d3c64"]
+name = "sub_821d3c64"
+
+[functions."0x8226e28c"]
+name = "sub_8226e28c"
+
+[functions."0x8226e290"]
+name = "sub_8226e290"
+
+[functions."0x82383910"]
+name = "sub_82383910"
+
+[functions."0x82383980"]
+name = "sub_82383980"
+
+[functions."0x82383b18"]
+name = "sub_82383b18"
+
+[functions."0x82388578"]
+name = "sub_82388578"
+
+[functions."0x823885c0"]
+name = "sub_823885c0"
+
+[functions."0x823885c4"]
+name = "sub_823885c4"
+
+[functions."0x82388610"]
+name = "sub_82388610"
+
+[functions."0x825230e8"]
+name = "sub_825230e8"
+
+[functions."0x82523100"]
+name = "sub_82523100"
+
+[functions."0x82523138"]
+name = "sub_82523138"
+
+[functions."0x82523158"]
+name = "sub_82523158"
+
+[functions."0x8252315c"]
+name = "sub_8252315c"
+
+[functions."0x82523188"]
+name = "sub_82523188"
+
+[functions."0x82523284"]
+name = "sub_82523284"
+
+[functions."0x8252329c"]
+name = "sub_8252329c"
+
+[functions."0x825232d4"]
+name = "sub_825232d4"
+
+[functions."0x825232f4"]
+name = "sub_825232f4"
+
+[functions."0x82523324"]
+name = "sub_82523324"
+
+

@@ -40,34 +40,34 @@ game_root = "game_data"
 [entrypoint]
 file_path = "game_data/default.xex"
 out_directory_path = "generated/default"
-includes = ["mmpps_functions.toml"]
+includes = ["mmpps_hints.toml", "mmpps_functions.toml"]
 
 [[modules]]
 guest_path = "MPD700.bin"
 file_path = "game_data/MPD700.bin"
 out_directory_path = "generated/MPD700"
-includes = ["mmpps_MPD700_functions.toml"]
+includes = ["mmpps_MPD700_hints.toml", "mmpps_MPD700_functions.toml"]
 
 [[modules]]
 guest_path = "MPD710.bin"
 file_path = "game_data/MPD710.bin"
 out_directory_path = "generated/MPD710"
-includes = ["mmpps_MPD710_functions.toml"]
+includes = ["mmpps_MPD710_hints.toml", "mmpps_MPD710_functions.toml"]
 
 [[modules]]
 guest_path = "MPD790.bin"
 file_path = "game_data/MPD790.bin"
 out_directory_path = "generated/MPD790"
-includes = ["mmpps_MPD790_functions.toml"]
+includes = ["mmpps_MPD790_hints.toml", "mmpps_MPD790_functions.toml"]
 
 [[modules]]
 guest_path = "MPD800.bin"
 file_path = "game_data/MPD800.bin"
 out_directory_path = "generated/MPD800"
-includes = ["mmpps_MPD800_functions.toml"]
+includes = ["mmpps_MPD800_hints.toml", "mmpps_MPD800_functions.toml"]
 
 [[modules]]
 guest_path = "MPD810.bin"
 file_path = "game_data/MPD810.bin"
 out_directory_path = "generated/MPD810"
-includes = ["mmpps_MPD810_functions.toml"]
+includes = ["mmpps_MPD810_hints.toml", "mmpps_MPD810_functions.toml"]

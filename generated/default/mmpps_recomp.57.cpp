@@ -6838,11 +6838,17 @@ DEFINE_REX_FUNC(sub_821F1760) {
 	// cmpwi cr6,r3,1
 	ctx.cr6.compare<int32_t>(ctx.r3.s32, 1, ctx.xer);
 	// beq cr6,0x821f1990
-	if (ctx.cr6.eq) goto loc_821F1990;
+	if (ctx.cr6.eq) {
+		sub_821F1990(ctx, base);
+		return;
+	}
 	// cmpwi cr6,r3,2
 	ctx.cr6.compare<int32_t>(ctx.r3.s32, 2, ctx.xer);
 	// beq cr6,0x821f196c
-	if (ctx.cr6.eq) goto loc_821F196C;
+	if (ctx.cr6.eq) {
+		sub_821F196C(ctx, base);
+		return;
+	}
 	// cmpwi cr6,r3,3
 	ctx.cr6.compare<int32_t>(ctx.r3.s32, 3, ctx.xer);
 	// beq cr6,0x821f1780
@@ -6878,433 +6884,181 @@ loc_821F1780:
 	// bctr 
 	switch (ctx.r11.u32) {
 	case 0:
-		goto loc_821F17BC;
+		sub_821F17BC(ctx, base);
+		return;
 	case 1:
-		goto loc_821F17EC;
+		sub_821F17EC(ctx, base);
+		return;
 	case 2:
-		goto loc_821F181C;
+		sub_821F181C(ctx, base);
+		return;
 	case 3:
-		goto loc_821F1844;
+		sub_821F1844(ctx, base);
+		return;
 	case 4:
-		goto loc_821F1874;
+		sub_821F1874(ctx, base);
+		return;
 	case 5:
-		goto loc_821F18A4;
+		sub_821F18A4(ctx, base);
+		return;
 	case 6:
 		goto loc_821F19B8;
 	case 7:
-		goto loc_821F18FC;
+		sub_821F18FC(ctx, base);
+		return;
 	case 8:
-		goto loc_821F192C;
+		sub_821F192C(ctx, base);
+		return;
 	case 9:
-		goto loc_821F195C;
+		sub_821F195C(ctx, base);
+		return;
 	case 10:
 		goto loc_821F19A8;
 	case 11:
-		goto loc_821F17C4;
+		sub_821F17C4(ctx, base);
+		return;
 	case 12:
-		goto loc_821F17CC;
+		sub_821F17CC(ctx, base);
+		return;
 	case 13:
-		goto loc_821F17D4;
+		sub_821F17D4(ctx, base);
+		return;
 	case 14:
-		goto loc_821F17DC;
+		sub_821F17DC(ctx, base);
+		return;
 	case 15:
-		goto loc_821F17E4;
+		sub_821F17E4(ctx, base);
+		return;
 	case 16:
-		goto loc_821F17F4;
+		sub_821F17F4(ctx, base);
+		return;
 	case 17:
-		goto loc_821F17FC;
+		sub_821F17FC(ctx, base);
+		return;
 	case 18:
-		goto loc_821F1804;
+		sub_821F1804(ctx, base);
+		return;
 	case 19:
-		goto loc_821F180C;
+		sub_821F180C(ctx, base);
+		return;
 	case 20:
-		goto loc_821F1814;
+		sub_821F1814(ctx, base);
+		return;
 	case 21:
-		goto loc_821F1824;
+		sub_821F1824(ctx, base);
+		return;
 	case 22:
-		goto loc_821F182C;
+		sub_821F182C(ctx, base);
+		return;
 	case 23:
-		goto loc_821F1834;
+		sub_821F1834(ctx, base);
+		return;
 	case 24:
 		goto loc_821F19C0;
 	case 25:
-		goto loc_821F183C;
+		sub_821F183C(ctx, base);
+		return;
 	case 26:
-		goto loc_821F184C;
+		sub_821F184C(ctx, base);
+		return;
 	case 27:
-		goto loc_821F1854;
+		sub_821F1854(ctx, base);
+		return;
 	case 28:
-		goto loc_821F185C;
+		sub_821F185C(ctx, base);
+		return;
 	case 29:
-		goto loc_821F1864;
+		sub_821F1864(ctx, base);
+		return;
 	case 30:
-		goto loc_821F186C;
+		sub_821F186C(ctx, base);
+		return;
 	case 31:
-		goto loc_821F187C;
+		sub_821F187C(ctx, base);
+		return;
 	case 32:
-		goto loc_821F1884;
+		sub_821F1884(ctx, base);
+		return;
 	case 33:
-		goto loc_821F188C;
+		sub_821F188C(ctx, base);
+		return;
 	case 34:
-		goto loc_821F1894;
+		sub_821F1894(ctx, base);
+		return;
 	case 35:
-		goto loc_821F189C;
+		sub_821F189C(ctx, base);
+		return;
 	case 36:
-		goto loc_821F18AC;
+		sub_821F18AC(ctx, base);
+		return;
 	case 37:
-		goto loc_821F18B4;
+		sub_821F18B4(ctx, base);
+		return;
 	case 38:
-		goto loc_821F18BC;
+		sub_821F18BC(ctx, base);
+		return;
 	case 39:
-		goto loc_821F18C4;
+		sub_821F18C4(ctx, base);
+		return;
 	case 40:
-		goto loc_821F18CC;
+		sub_821F18CC(ctx, base);
+		return;
 	case 41:
-		goto loc_821F18D4;
+		sub_821F18D4(ctx, base);
+		return;
 	case 42:
-		goto loc_821F18DC;
+		sub_821F18DC(ctx, base);
+		return;
 	case 43:
-		goto loc_821F18E4;
+		sub_821F18E4(ctx, base);
+		return;
 	case 44:
-		goto loc_821F18EC;
+		sub_821F18EC(ctx, base);
+		return;
 	case 45:
-		goto loc_821F18F4;
+		sub_821F18F4(ctx, base);
+		return;
 	case 46:
-		goto loc_821F1904;
+		sub_821F1904(ctx, base);
+		return;
 	case 47:
-		goto loc_821F190C;
+		sub_821F190C(ctx, base);
+		return;
 	case 48:
-		goto loc_821F1914;
+		sub_821F1914(ctx, base);
+		return;
 	case 49:
-		goto loc_821F191C;
+		sub_821F191C(ctx, base);
+		return;
 	case 50:
-		goto loc_821F1924;
+		sub_821F1924(ctx, base);
+		return;
 	case 51:
-		goto loc_821F1934;
+		sub_821F1934(ctx, base);
+		return;
 	case 52:
-		goto loc_821F193C;
+		sub_821F193C(ctx, base);
+		return;
 	case 53:
-		goto loc_821F1944;
+		sub_821F1944(ctx, base);
+		return;
 	case 54:
-		goto loc_821F194C;
+		sub_821F194C(ctx, base);
+		return;
 	case 55:
-		goto loc_821F1954;
+		sub_821F1954(ctx, base);
+		return;
 	case 56:
-		goto loc_821F1964;
+		sub_821F1964(ctx, base);
+		return;
 	case 57:
 		goto loc_821F19B0;
 	case 58:
-		goto loc_821F17B4;
+		sub_821F17B4(ctx, base);
+		return;
 	default:
 		__builtin_trap(); // Switch case out of range
 	}
-loc_821F17B4:
-	// li r11,8800
-	ctx.r11.s64 = 8800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17BC:
-	// li r11,9600
-	ctx.r11.s64 = 9600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17C4:
-	// li r11,10000
-	ctx.r11.s64 = 10000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17CC:
-	// li r11,10400
-	ctx.r11.s64 = 10400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17D4:
-	// li r11,10800
-	ctx.r11.s64 = 10800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17DC:
-	// li r11,11200
-	ctx.r11.s64 = 11200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17E4:
-	// li r11,11600
-	ctx.r11.s64 = 11600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17EC:
-	// li r11,12000
-	ctx.r11.s64 = 12000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17F4:
-	// li r11,12400
-	ctx.r11.s64 = 12400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F17FC:
-	// li r11,12800
-	ctx.r11.s64 = 12800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1804:
-	// li r11,13200
-	ctx.r11.s64 = 13200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F180C:
-	// li r11,13600
-	ctx.r11.s64 = 13600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1814:
-	// li r11,14000
-	ctx.r11.s64 = 14000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F181C:
-	// li r11,14400
-	ctx.r11.s64 = 14400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1824:
-	// li r11,14800
-	ctx.r11.s64 = 14800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F182C:
-	// li r11,15200
-	ctx.r11.s64 = 15200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1834:
-	// li r11,15600
-	ctx.r11.s64 = 15600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F183C:
-	// li r11,16400
-	ctx.r11.s64 = 16400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1844:
-	// li r11,16800
-	ctx.r11.s64 = 16800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F184C:
-	// li r11,17200
-	ctx.r11.s64 = 17200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1854:
-	// li r11,17600
-	ctx.r11.s64 = 17600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F185C:
-	// li r11,18000
-	ctx.r11.s64 = 18000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1864:
-	// li r11,18400
-	ctx.r11.s64 = 18400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F186C:
-	// li r11,18800
-	ctx.r11.s64 = 18800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1874:
-	// li r11,19200
-	ctx.r11.s64 = 19200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F187C:
-	// li r11,19600
-	ctx.r11.s64 = 19600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1884:
-	// li r11,20000
-	ctx.r11.s64 = 20000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F188C:
-	// li r11,20400
-	ctx.r11.s64 = 20400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1894:
-	// li r11,20800
-	ctx.r11.s64 = 20800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F189C:
-	// li r11,21200
-	ctx.r11.s64 = 21200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18A4:
-	// li r11,21600
-	ctx.r11.s64 = 21600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18AC:
-	// li r11,22000
-	ctx.r11.s64 = 22000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18B4:
-	// li r11,22400
-	ctx.r11.s64 = 22400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18BC:
-	// li r11,22800
-	ctx.r11.s64 = 22800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18C4:
-	// li r11,23200
-	ctx.r11.s64 = 23200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18CC:
-	// li r11,23600
-	ctx.r11.s64 = 23600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18D4:
-	// li r11,24400
-	ctx.r11.s64 = 24400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18DC:
-	// li r11,24800
-	ctx.r11.s64 = 24800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18E4:
-	// li r11,25200
-	ctx.r11.s64 = 25200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18EC:
-	// li r11,25600
-	ctx.r11.s64 = 25600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18F4:
-	// li r11,26000
-	ctx.r11.s64 = 26000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F18FC:
-	// li r11,26400
-	ctx.r11.s64 = 26400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1904:
-	// li r11,26800
-	ctx.r11.s64 = 26800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F190C:
-	// li r11,27200
-	ctx.r11.s64 = 27200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1914:
-	// li r11,27600
-	ctx.r11.s64 = 27600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F191C:
-	// li r11,28000
-	ctx.r11.s64 = 28000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1924:
-	// li r11,28400
-	ctx.r11.s64 = 28400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F192C:
-	// li r11,28800
-	ctx.r11.s64 = 28800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1934:
-	// li r11,29200
-	ctx.r11.s64 = 29200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F193C:
-	// li r11,29600
-	ctx.r11.s64 = 29600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1944:
-	// li r11,30000
-	ctx.r11.s64 = 30000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F194C:
-	// li r11,30400
-	ctx.r11.s64 = 30400;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1954:
-	// li r11,30800
-	ctx.r11.s64 = 30800;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F195C:
-	// li r11,31200
-	ctx.r11.s64 = 31200;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1964:
-	// li r11,31600
-	ctx.r11.s64 = 31600;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F196C:
-	// cmplwi cr6,r4,1
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 1, ctx.xer);
-	// beq cr6,0x821f19b8
-	if (ctx.cr6.eq) goto loc_821F19B8;
-	// cmplwi cr6,r4,2
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 2, ctx.xer);
-	// beq cr6,0x821f19b0
-	if (ctx.cr6.eq) goto loc_821F19B0;
-	// cmplwi cr6,r4,3
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 3, ctx.xer);
-	// bne cr6,0x821f19a8
-	if (!ctx.cr6.eq) goto loc_821F19A8;
-	// lis r11,0
-	ctx.r11.s64 = 0;
-	// ori r11,r11,48000
-	ctx.r11.u64 = ctx.r11.u64 | 48000;
-	// b 0x821f19c4
-	goto loc_821F19C4;
-loc_821F1990:
-	// cmplwi cr6,r4,1
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 1, ctx.xer);
-	// beq cr6,0x821f19c0
-	if (ctx.cr6.eq) goto loc_821F19C0;
-	// cmplwi cr6,r4,2
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 2, ctx.xer);
-	// beq cr6,0x821f19b8
-	if (ctx.cr6.eq) goto loc_821F19B8;
-	// cmplwi cr6,r4,3
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 3, ctx.xer);
-	// beq cr6,0x821f19b0
-	if (ctx.cr6.eq) goto loc_821F19B0;
 loc_821F19A8:
 	// li r3,5
 	ctx.r3.s64 = 5;

@@ -1,3 +1,25 @@
 # Per-module dynamic entrypoint overrides for MPD800.bin (Pink Sweets base ver, guest 0x89900000).
 # Populate when playtesting hits an unregistered-function or stub trap
 # inside this module (see AGENTS.md).
+
+# triage bootstrap 2026-10-27 - unresolved-call/branch targets (dfkr iter-9 precedent),
+# registered as functions so the recomp graph can name them properly.
+[functions."0x899cb4b0"]
+name = "sub_899cb4b0"
+
+[functions."0x899cb534"]
+name = "sub_899cb534"
+
+[functions."0x899cd45c"]
+name = "sub_899cd45c"
+
+[functions."0x899d3528"]
+name = "sub_899d3528"
+
+[functions."0x899d6d88"]
+name = "sub_899d6d88"
+
+[functions."0x899d6de4"]
+name = "sub_899d6de4"
+
+

@@ -10795,7 +10795,10 @@ DEFINE_REX_FUNC(sub_8226E208) {
 	// cmplwi cr6,r11,11
 	ctx.cr6.compare<uint32_t>(ctx.r11.u32, 11, ctx.xer);
 	// bgt cr6,0x8226e320
-	if (ctx.cr6.gt) goto loc_8226E320;
+	if (ctx.cr6.gt) {
+		sub_8226E320(ctx, base);
+		return;
+	}
 	// lis r12,-32217
 	ctx.r12.s64 = -2111373312;
 	// rlwinm r0,r11,2,0,29
@@ -10809,29 +10812,40 @@ DEFINE_REX_FUNC(sub_8226E208) {
 	// bctr 
 	switch (ctx.r11.u32) {
 	case 0:
-		goto loc_8226E2AC;
+		sub_8226E2AC(ctx, base);
+		return;
 	case 1:
-		goto loc_8226E2BC;
+		sub_8226E2BC(ctx, base);
+		return;
 	case 2:
-		goto loc_8226E2CC;
+		sub_8226E2CC(ctx, base);
+		return;
 	case 3:
-		goto loc_8226E2D8;
+		sub_8226E2D8(ctx, base);
+		return;
 	case 4:
-		goto loc_8226E2E4;
+		sub_8226E2E4(ctx, base);
+		return;
 	case 5:
-		goto loc_8226E2F0;
+		sub_8226E2F0(ctx, base);
+		return;
 	case 6:
-		goto loc_8226E308;
+		sub_8226E308(ctx, base);
+		return;
 	case 7:
-		goto loc_8226E314;
+		sub_8226E314(ctx, base);
+		return;
 	case 8:
 		goto loc_8226E264;
 	case 9:
-		goto loc_8226E274;
+		sub_8226E274(ctx, base);
+		return;
 	case 10:
-		goto loc_8226E2FC;
+		sub_8226E2FC(ctx, base);
+		return;
 	case 11:
-		goto loc_8226E284;
+		sub_8226E284(ctx, base);
+		return;
 	default:
 		__builtin_trap(); // Switch case out of range
 	}
@@ -10843,114 +10857,7 @@ loc_8226E264:
 	// ori r11,r11,22857
 	ctx.r11.u64 = ctx.r11.u64 | 22857;
 	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E274:
-	// lis r11,12338
-	ctx.r11.s64 = 808583168;
-	// li r10,12
-	ctx.r10.s64 = 12;
-	// ori r11,r11,13385
-	ctx.r11.u64 = ctx.r11.u64 | 13385;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E284:
-	// lis r11,12849
-	ctx.r11.s64 = 842072064;
-	// li r10,12
-	ctx.r10.s64 = 12;
-loc_8226E28C:
-	// ori r11,r11,22105
-	ctx.r11.u64 = ctx.r11.u64 | 22105;
-loc_8226E290:
-	// cmplwi cr6,r4,0
-	ctx.cr6.compare<uint32_t>(ctx.r4.u32, 0, ctx.xer);
-	// beq cr6,0x8226e29c
-	if (ctx.cr6.eq) goto loc_8226E29C;
-	// stw r11,0(r4)
-	REX_STORE_U32(ctx.r4.u32 + 0, ctx.r11.u32);
-loc_8226E29C:
-	// cmplwi cr6,r5,0
-	ctx.cr6.compare<uint32_t>(ctx.r5.u32, 0, ctx.xer);
-	// beq cr6,0x8226e2a8
-	if (ctx.cr6.eq) goto loc_8226E2A8;
-	// sth r10,0(r5)
-	REX_STORE_U16(ctx.r5.u32 + 0, ctx.r10.u16);
-loc_8226E2A8:
-	// blr 
-	return;
-loc_8226E2AC:
-	// lis r11,12889
-	ctx.r11.s64 = 844693504;
-	// li r10,16
-	ctx.r10.s64 = 16;
-	// ori r11,r11,21849
-	ctx.r11.u64 = ctx.r11.u64 | 21849;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E2BC:
-	// lis r11,22870
-	ctx.r11.s64 = 1498808320;
-	// li r10,16
-	ctx.r10.s64 = 16;
-	// ori r11,r11,22869
-	ctx.r11.u64 = ctx.r11.u64 | 22869;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E2CC:
-	// lis r11,21849
-	ctx.r11.s64 = 1431896064;
-	// li r10,16
-	ctx.r10.s64 = 16;
-	// b 0x8226e28c
-	goto loc_8226E28C;
-loc_8226E2D8:
-	// li r11,0
-	ctx.r11.s64 = 0;
-	// li r10,24
-	ctx.r10.s64 = 24;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E2E4:
-	// li r11,0
-	ctx.r11.s64 = 0;
-	// li r10,16
-	ctx.r10.s64 = 16;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E2F0:
-	// li r11,3
-	ctx.r11.s64 = 3;
-	// li r10,16
-	ctx.r10.s64 = 16;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E2FC:
-	// li r11,3
-	ctx.r11.s64 = 3;
-	// li r10,12
-	ctx.r10.s64 = 12;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E308:
-	// li r11,0
-	ctx.r11.s64 = 0;
-	// li r10,32
-	ctx.r10.s64 = 32;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E314:
-	// li r11,0
-	ctx.r11.s64 = 0;
-	// li r10,8
-	ctx.r10.s64 = 8;
-	// b 0x8226e290
-	goto loc_8226E290;
-loc_8226E320:
-	// lis r3,-32761
-	ctx.r3.s64 = -2147024896;
-	// ori r3,r3,87
-	ctx.r3.u64 = ctx.r3.u64 | 87;
-	// blr 
+	sub_8226e290(ctx, base);
 	return;
 }
 

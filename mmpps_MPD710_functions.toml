@@ -1,3 +1,16 @@
 # Per-module dynamic entrypoint overrides for MPD710.bin (MMP '11 Cave Arrange ver, guest 0x88740000).
 # Populate when playtesting hits an unregistered-function or stub trap
 # inside this module (see AGENTS.md).
+
+# triage bootstrap 2026-10-27 - unresolved-call/branch targets (dfkr iter-9 precedent),
+# registered as functions so the recomp graph can name them properly.
+[functions."0x8879d6c8"]
+name = "sub_8879d6c8"
+
+[functions."0x8879d724"]
+name = "sub_8879d724"
+
+[functions."0x8879f224"]
+name = "sub_8879f224"
+
+

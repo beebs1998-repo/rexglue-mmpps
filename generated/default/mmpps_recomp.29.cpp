@@ -30303,6 +30303,15 @@ loc_82522334:
 	return;
 }
 
+DEFINE_REX_FUNC(sub_82523204) {
+	REX_FUNC_PROLOGUE();
+	// li r9,32
+	ctx.r9.s64 = 32;
+	// b 0x82523188
+	sub_82523188(ctx, base);
+	return;
+}
+
 DEFINE_REX_FUNC(sub_82523BF8) {
 	REX_FUNC_PROLOGUE();
 	// lwz r11,4(r4)

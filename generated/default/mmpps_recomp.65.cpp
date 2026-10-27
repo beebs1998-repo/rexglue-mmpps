@@ -11029,7 +11029,10 @@ DEFINE_REX_FUNC(sub_8226E460) {
 	// cmplwi cr6,r3,13
 	ctx.cr6.compare<uint32_t>(ctx.r3.u32, 13, ctx.xer);
 	// bgt cr6,0x8226e528
-	if (ctx.cr6.gt) goto loc_8226E528;
+	if (ctx.cr6.gt) {
+		sub_8226E528(ctx, base);
+		return;
+	}
 	// lis r12,-32217
 	ctx.r12.s64 = -2111373312;
 	// rlwinm r0,r3,2,0,29
@@ -11045,107 +11048,50 @@ DEFINE_REX_FUNC(sub_8226E460) {
 	case 0:
 		goto loc_8226E4B8;
 	case 1:
-		goto loc_8226E4C0;
+		sub_8226E4C0(ctx, base);
+		return;
 	case 2:
-		goto loc_8226E4C8;
+		sub_8226E4C8(ctx, base);
+		return;
 	case 3:
-		goto loc_8226E4D0;
+		sub_8226E4D0(ctx, base);
+		return;
 	case 4:
-		goto loc_8226E4D8;
+		sub_8226E4D8(ctx, base);
+		return;
 	case 5:
-		goto loc_8226E4E0;
+		sub_8226E4E0(ctx, base);
+		return;
 	case 6:
-		goto loc_8226E4E8;
+		sub_8226E4E8(ctx, base);
+		return;
 	case 7:
-		goto loc_8226E4F0;
+		sub_8226E4F0(ctx, base);
+		return;
 	case 8:
-		goto loc_8226E4F8;
+		sub_8226E4F8(ctx, base);
+		return;
 	case 9:
-		goto loc_8226E500;
+		sub_8226E500(ctx, base);
+		return;
 	case 10:
-		goto loc_8226E508;
+		sub_8226E508(ctx, base);
+		return;
 	case 11:
-		goto loc_8226E510;
+		sub_8226E510(ctx, base);
+		return;
 	case 12:
-		goto loc_8226E518;
+		sub_8226E518(ctx, base);
+		return;
 	case 13:
-		goto loc_8226E520;
+		sub_8226E520(ctx, base);
+		return;
 	default:
 		__builtin_trap(); // Switch case out of range
 	}
 loc_8226E4B8:
 	// li r3,1
 	ctx.r3.s64 = 1;
-	// blr 
-	return;
-loc_8226E4C0:
-	// li r3,2
-	ctx.r3.s64 = 2;
-	// blr 
-	return;
-loc_8226E4C8:
-	// li r3,3
-	ctx.r3.s64 = 3;
-	// blr 
-	return;
-loc_8226E4D0:
-	// li r3,4
-	ctx.r3.s64 = 4;
-	// blr 
-	return;
-loc_8226E4D8:
-	// li r3,5
-	ctx.r3.s64 = 5;
-	// blr 
-	return;
-loc_8226E4E0:
-	// li r3,6
-	ctx.r3.s64 = 6;
-	// blr 
-	return;
-loc_8226E4E8:
-	// li r3,7
-	ctx.r3.s64 = 7;
-	// blr 
-	return;
-loc_8226E4F0:
-	// li r3,8
-	ctx.r3.s64 = 8;
-	// blr 
-	return;
-loc_8226E4F8:
-	// li r3,9
-	ctx.r3.s64 = 9;
-	// blr 
-	return;
-loc_8226E500:
-	// li r3,10
-	ctx.r3.s64 = 10;
-	// blr 
-	return;
-loc_8226E508:
-	// li r3,12
-	ctx.r3.s64 = 12;
-	// blr 
-	return;
-loc_8226E510:
-	// li r3,11
-	ctx.r3.s64 = 11;
-	// blr 
-	return;
-loc_8226E518:
-	// li r3,13
-	ctx.r3.s64 = 13;
-	// blr 
-	return;
-loc_8226E520:
-	// li r3,14
-	ctx.r3.s64 = 14;
-	// blr 
-	return;
-loc_8226E528:
-	// li r3,0
-	ctx.r3.s64 = 0;
 	// blr 
 	return;
 }
