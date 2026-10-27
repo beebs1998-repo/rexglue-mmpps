@@ -1,0 +1,73 @@
+# mmpps - ReXGlue codegen manifest.
+#
+# Muchi Muchi Pork & Pink Sweets (Xbox 360 retail compilation, title
+# 435A07DE). The entrypoint is the XEX; the five game-module executables are
+# Cave's shipped binaries referenced by the shell through "game:\MPDxxx.bin"
+# path strings (decrypted-entrypoint string scan, 2026-10-26, see AGENTS.md).
+#
+# UNLIKE the sibling ports (futari/dfkbl/mushi/dfkr), the five modules do NOT
+# share a guest base: every XEX header pins its own load address, and the
+# five ranges do not overlap:
+#
+#   MPD700.bin  Muchi Muchi Pork base ver     0x88000000 - 0x88730000
+#   MPD710.bin  MMP '11 Cave Arrange ver      0x88740000 - 0x88FC0000
+#   MPD790.bin  MMP '07 Cave festival ver     0x891C0000 - 0x898F0000
+#   MPD800.bin  Pink Sweets base ver          0x89900000 - 0x89FD0000
+#   MPD810.bin  Pink Sweets '11 Arrange ver   0x89FE0000 - 0x8A720000
+#
+# So the sibling "one codegen target per run, because the overlap check
+# rejects a combined run" rule is not strictly required here - codegen runs
+# stay one target per invocation anyway (futari Iteration 20: rexglue codegen
+# crashed analyzing multiple module targets in one process), and the two
+# generated glue files are still hand-merged
+# (generated/default/dll_targets.cmake, module_registry.cpp).
+#
+# Everything else the entrypoint references is DATA, not code (recompiled
+# modules are matched by filename): MPD000 (shaders), MPD100/110/111/112,
+# MPD200/210/211/212 (per-game data archives), MPD900, PKG000. The shell also
+# references game:\MPD300/310/311/312.bin, which are NOT on the disc copy -
+# expected unsurfaced content, see AGENTS.md. A DLC content package
+# (user_data/0000000000000000/435A07DE/00000002/A147F6AB.../DLC1000.BIN,
+# guest path mkp:\DLC1000.bin) exists locally in an opaque custom container
+# format - deferred to the first playtest; if it turns out to be an
+# XexLoadImage module, add it here and regenerate.
+
+[project]
+name = "mmpps"
+sdk_version = "0.10.0"
+game_root = "game_data"
+
+[entrypoint]
+file_path = "game_data/default.xex"
+out_directory_path = "generated/default"
+includes = ["mmpps_functions.toml"]
+
+[[modules]]
+guest_path = "MPD700.bin"
+file_path = "game_data/MPD700.bin"
+out_directory_path = "generated/MPD700"
+includes = ["mmpps_MPD700_functions.toml"]
+
+[[modules]]
+guest_path = "MPD710.bin"
+file_path = "game_data/MPD710.bin"
+out_directory_path = "generated/MPD710"
+includes = ["mmpps_MPD710_functions.toml"]
+
+[[modules]]
+guest_path = "MPD790.bin"
+file_path = "game_data/MPD790.bin"
+out_directory_path = "generated/MPD790"
+includes = ["mmpps_MPD790_functions.toml"]
+
+[[modules]]
+guest_path = "MPD800.bin"
+file_path = "game_data/MPD800.bin"
+out_directory_path = "generated/MPD800"
+includes = ["mmpps_MPD800_functions.toml"]
+
+[[modules]]
+guest_path = "MPD810.bin"
+file_path = "game_data/MPD810.bin"
+out_directory_path = "generated/MPD810"
+includes = ["mmpps_MPD810_functions.toml"]

@@ -1,0 +1,9 @@
+# Embedded-trap allow-list for scripts/validate_codegen.ps1.
+#
+# Identity format: "<target> <class> <guest-addr=guest-addr>"; everything after
+# '#' on a line is a comment. Site identities are host-file independent.
+#
+# Intentionally EMPTY at project creation (dfkr convention): a new site fails
+# the gate until it is fixed (hints/overrides) or triaged into this file
+# deliberately. See the sibling allowlists for what a triaged baseline looks
+# like.

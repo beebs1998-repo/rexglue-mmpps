@@ -1,0 +1,3 @@
+# Per-module dynamic entrypoint overrides for MPD700.bin (Muchi Muchi Pork base ver, guest 0x88000000).
+# Populate when playtesting hits an unregistered-function or stub trap
+# inside this module (see AGENTS.md).

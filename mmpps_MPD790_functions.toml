@@ -1,0 +1,3 @@
+# Per-module dynamic entrypoint overrides for MPD790.bin (MMP '07 Cave festival ver, guest 0x891C0000).
+# Populate when playtesting hits an unregistered-function or stub trap
+# inside this module (see AGENTS.md).

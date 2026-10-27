@@ -1,0 +1,11 @@
+# Dynamic entrypoints for the mmpps entrypoint XEX.
+# Populate when playtesting hits
+# "[FATAL] Call to invalid or unregistered function at guest address 0x..."
+# AFTER the static hint pass (scripts/build_module_hints.ps1) did not cover
+# the address (see AGENTS.md).
+#
+# Bootstrap seeds (initial codegen validation): direct `b` targets in the
+# shell code range that ReXGlue's analyzer does not detect as function starts
+# either (same resolution dfkbl/mushi/dfkr use for their curated ep seeds).
+[functions."0x8222F010"]
+name = "sub_8222F010"

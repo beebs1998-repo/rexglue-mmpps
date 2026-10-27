@@ -1,0 +1,3 @@
+# Per-module dynamic entrypoint overrides for MPD810.bin (Pink Sweets '11 Cave Arrange ver, guest 0x89FE0000).
+# Populate when playtesting hits an unregistered-function or stub trap
+# inside this module (see AGENTS.md).
