@@ -104,3 +104,77 @@ embedded-trap gate cannot see: `use of undeclared label 'loc_8805D7E4'` in
 - Gate re-run: **code validation OK** (allowlist still empty, 488
   informational switch-traps).
 - Status: gate green + committed (`563bb88`); rebuild in flight.
+
+## Iteration 4 — first playtest: module co-residency; SDK table mirror fix (2026-10-28)
+
+**Scope:** first launch. Game boots to the shell; two module loads fail at
+first-boot pre-load sequence. SDK change required and applied.
+
+**Ground truth (all five modules vs. sibling predictions):**
+
+- The shell **`XexLoadImage`s all five MPD modules in one pre-boot sequence**
+  ("no existing module, loading fresh", 700 → (710 fail) → 790 → (800 fail)
+  → 810). **No unload between loads** — the predicted futari-style
+  unload→load mode-swap hook does NOT exist at this stage; modules are
+  permanently co-resident.
+- **Module-casing: lowercased `mpd7xx.bin` registry names match everything**
+  (`Registering module` won; no path mismatch errors) — the hand-merged
+  `module_registry.cpp` normal-case worry was unfounded.
+- Co-resident success set wave 1: **MPD700+MPD790+MPD810** loaded and
+  registered (1482/1601/1662 functions). MPD710/MPD800 failed:
+  `[error] [core] Module image range [88740000, 891812E8) overlaps existing [88000000, 888E8D48)` →
+  `InitializeFunctionTable failed for module 'mpd710.bin'`.
+  Same 47 seconds later for wave 2 (second selection attempt).
+- `GetProcAddress(ordinal 4/5)` "ordinal out of bounds" on every module —
+  the shell queries export ordinals that don't exist in the MPD XEX export
+  tables; non-fatal (load continues), and reappears identically across
+  waves. [warning] noise unless correlated with a crash — keep an eye but
+  do not treat as regression.
+- The trace run exited cleanly by itself after the failed wave(s) — the
+  shell apparently gives up without a visible fatal (log ends with the
+  `GetProcAddress` rejects; no `[critical]`). Window shown was the boot
+  screen; no crash.
+
+**Root cause of the load failure:**
+
+- Each recompiled module gets a **per-module dispatch table** for indirect
+  calls, `AllocFixed`'d executively inside the guest v80000000 heap at
+  `IMAGE_BASE + IMAGE_SIZE` (+ 2*(code_size+64KB) of slots). MMPPS' five
+  module XEX headers pin bases 0x88000000..0x89FE0000 so images don't
+  overlap, but MPD700's table `[0x88730000, ~0x888D0000)` lands inside
+  MPD710's image `[0x88740000, ...)`, and MPD790's table inside MPD800's —
+  the sibling ports never saw this: their modes unload before swapping,
+  so only one module is resident at a time.
+
+**Fix (SDK fork `bdcebf6`, all four touch-points):**
+
+- Dispatch tables are now **mirrored into the 0x90000000-0x9FFFFFFF window**:
+  `table_base = IMAGE_BASE + IMAGE_SIZE + 0x10000000`
+  (`FunctionDispatcher::kFunctionTableMirrorDelta`). Deterministic, per-image
+  (collisions mirror the image layout, which the XEX headers guarantee
+  disjoint), never overlaps any image or other table, and stays inside the
+  otherwise-unused `v90000000` guest heap. Linear guest↔host math holds
+  (`TranslateVirtual` = `virtual_membase_ + VA`, zero heap offsets for the
+  virtual heaps), so the generated `REX_LOOKUP_FUNC` macro just adds
+  `REX_TABLE_DELTA` (template `_indirect_call.inja`).
+- `xmemory.cpp` Initialize/DestroyFunctionTable allocate/release from
+  `heaps_.v90000000`; `function_dispatcher.cpp` overlap checks now run on
+  image-vs-table and table-vs-table ranges using the mirrored bases.
+  Thunk addresses (`AllocateThunk`, `GuestAddress` slots in
+  `[code_base+code_size, +64KB)`) are table-relative and placement-
+  independent — unchanged.
+- SDK committed in the fork (`bdcebf6` on top of `348c804`), pointer
+  bumped (`8f0c0e7`), all targets regenerated, gate green, rebuild +
+  relaunch pending.
+
+**Status:** first table-mirror launch failed on an over-broad check: the
+image-vs-table condition from the old layout was kept verbatim, so every
+image "overlapped" the entrypoint's own mirrored-table range
+(`[82000000, 93048A40)`) — images live exclusively in the 0x8xxxxxxx window
+now, so only table-vs-table (+ code-vs-code) collision checks remain
+(SDK fork `a4cd7af`, pointer bump `b212915`).
+
+**Result after the check fix:** **all five modules load co-resident**
+(1482/1501/1601/1611/1662 functions registered, zero overlap errors, no
+`[critical]`) — the shell boots and idles rendering (15+ min session
+observed). Awaiting UI-side mode entry playtest.
