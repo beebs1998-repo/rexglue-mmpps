@@ -10804,14 +10804,6 @@ DEFINE_REX_FUNC(sub_8226E2FC) {
 	return;
 }
 
-DEFINE_REX_FUNC(sub_8226E6DC) {
-	REX_FUNC_PROLOGUE();
-	// li r3,23
-	ctx.r3.s64 = 23;
-	// blr 
-	return;
-}
-
 DEFINE_REX_FUNC(sub_8226EBA8) {
 	REX_FUNC_PROLOGUE();
 	uint32_t ea{};

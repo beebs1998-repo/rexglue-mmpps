@@ -8,6 +8,10 @@
 #   - unresolved bctr:       REX_FATAL("Jump target 0x.. unresolved at bctr 0x..")
 #   - unregistered jump:     REX_FATAL("Jump target 0x.. classified as function but not registered")
 #   - stub functions:        "// STUB: Function at 0x.. has no discovered code blocks"
+#   - dangling labels:       `goto loc_XXXXXXXX` referencing a label that is not
+#     emitted in the same file (an out-of-range intra-function jump whose target
+#     block was split off by a hint-seeded/registered function head — a compile
+#     error, not a runtime trap; same root causes as the unresolved classes)
 #   - (informational) switch-case out-of-range __builtin_trap() sites; counted
 #     but never fatal — the SDK still emits the trap class today.
 #
@@ -74,6 +78,48 @@ foreach ($t in $TARGETS) {
 }
 
 $switchTrapCount = ($allSites | Where-Object Class -eq 'switch_trap').Count
+
+# Dangling-label scan: `goto loc_XXXXXXXX` without a `loc_XXXXXXXX:` label in
+# the same file. This is a hard C++ compile error (not an embedded runtime
+# trap), which is why the classes above cannot catch it: the generated tree
+# looks gate-clean until the build fails. Root cause: an intra-function
+# (out-of-file-inline) jump whose target block was split off into a separate
+# function (usually a hint-seeded head); fix by dropping the wrong seed.
+# Function bodies are emitted whole into one file, so the check is per-file
+# (strictly more precise than a per-target union).
+foreach ($t in $TARGETS) {
+    $dangling = @{}
+    $danglingFile = @{}
+    foreach ($cpp in (Get-ChildItem (Join-Path $root "generated\$t") -Filter 'mmpps_recomp*.cpp')) {
+        $raw = Get-Content $cpp.FullName -Raw
+        # count goto refs per target address
+        $refs = @{}
+        foreach ($m in [regex]::Matches($raw, 'goto loc_([0-9A-Fa-f]{8})')) {
+            $refs[$m.Groups[1].Value.ToUpper()] = $true
+        }
+        if ($refs.Count -eq 0) { continue }
+        # labels emitted in this file
+        $defs = @{}
+        foreach ($m in [regex]::Matches($raw, 'loc_([0-9A-Fa-f]{8}):')) {
+            $defs[$m.Groups[1].Value.ToUpper()] = $true
+        }
+        foreach ($a in $refs.Keys) {
+            if (-not $defs.ContainsKey($a) -and -not $dangling.ContainsKey("$t 0X$a")) {
+                $dangling["$t 0X$a"] = $true
+                $danglingFile["$t 0X$a"] = $cpp.FullName.Substring($root.Length + 1)
+            }
+        }
+    }
+    foreach ($k in $dangling.Keys) {
+        $allSites.Add([pscustomobject]@{
+            Target   = $t
+            Class    = 'dangling_label'
+            Identity = $k.Substring($t.Length + 1)
+            Site     = $danglingFile[$k]
+            Text     = "goto $($k.Substring($t.Length + 1).Replace('0X','loc_0X')) with no emitted label in target '$t'"
+        })
+    }
+}
 
 
 if ($WriteAllowList) {

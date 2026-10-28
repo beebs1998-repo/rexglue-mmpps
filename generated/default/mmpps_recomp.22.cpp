@@ -11596,6 +11596,26 @@ loc_8226E6CC:
 	ctx.r3.s64 = 15;
 	// blr 
 	return;
+loc_8226E6D4:
+	// li r3,16
+	ctx.r3.s64 = 16;
+	// blr 
+	return;
+loc_8226E6DC:
+	// li r3,23
+	ctx.r3.s64 = 23;
+	// blr 
+	return;
+loc_8226E6E4:
+	// li r3,24
+	ctx.r3.s64 = 24;
+	// blr 
+	return;
+loc_8226E6EC:
+	// li r3,17
+	ctx.r3.s64 = 17;
+	// blr 
+	return;
 loc_8226E738:
 	// li r11,29
 	ctx.r11.s64 = 29;

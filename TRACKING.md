@@ -40,3 +40,35 @@ conventions.
 
 **Status:** open. Next: static hint pass → codegen → first build → first
 playtest (ground truth to fill the mode table in AGENTS.md).
+
+## Iteration 2 — hint pass + unresolved-target triage, gate green (2026-10-27)
+
+**Scope:** static analysis + codegen hardening; build/playtest still pending.
+
+- Static hint pass (`scripts/build_module_hints.ps1`, XenonRecomp binary
+  reused from the dfkr tree): modules got 35/38/35/55/55 seeds
+  (MPD700/710/790/800/810, ~700 gap-fill stub-candidates each dropped as
+  data), shell got 383 seeds with 84 unresolved-b warnings — all of which
+  materialized as trap-gate sites, exactly as in dfkr iter-9.
+- Wiring the hints into the manifest and regenerating tripped the embedded-
+  trap gate with ~110 sites: ~56 shell `unresolved_call` + ~28 shell
+  `unresolved_branch` (mostly `cr6` conditional twins), plus per-module
+  `unresolved_branch` cr6 twins (MPD700×4, MPD710×4, MPD790×3, MPD800×9,
+  MPD810×9). Same classes as dfkr iter-8/9.
+- Triage: every unique unresolved **target** address was registered as a
+  function in the owning TOML (`scripts/triage_bootstrap.ps1`,
+  dfkr iter-9 precedent). Two tool bugs bit and are fixed in the script:
+  1. the dedup check used `-like "*[functions."0x…"]*"` where `[` is a
+     wildcard character class → silently matched everything and wrote
+     nothing (site set frozen across rounds);
+  2. the address formatter dropped the `0x` prefix and the entries lacked
+     `name =` lines → malformed keys. After normalization
+     ([functions."0x…"] + name), one codegen round resolved **all** sites.
+- Result: 52 new function registrations (32 shell + 20 across the modules),
+  `validate_codegen.ps1` green with the allowlist still intentionally empty
+  (0 triaged sites; 488 informational switch-trap sites).
+- First `cmake --preset win-amd64-release` configure: OK (clang 22.1.7,
+  SDK warning about unknown version = benign).
+
+**Status:** gate green, build in flight. Next: build → run double-check of
+`trap_allowlist.txt` staleness (still empty) → first playtest.

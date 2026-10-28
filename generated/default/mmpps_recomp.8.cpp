@@ -10962,14 +10962,6 @@ loc_8226E444:
 	return;
 }
 
-DEFINE_REX_FUNC(sub_8226E6EC) {
-	REX_FUNC_PROLOGUE();
-	// li r3,17
-	ctx.r3.s64 = 17;
-	// blr 
-	return;
-}
-
 DEFINE_REX_FUNC(sub_82270798) {
 	REX_FUNC_PROLOGUE();
 	// cmplwi cr6,r3,0

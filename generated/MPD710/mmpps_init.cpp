@@ -648,7 +648,6 @@ PPCFuncMapping PPCFuncMappings[] = {
 	{ 0x8879F168, sub_8879F168 },
 	{ 0x8879F190, sub_8879F190 },
 	{ 0x8879F224, sub_8879f224 },
-	{ 0x8879F264, sub_8879F264 },
 	{ 0x8879F2C0, sub_8879F2C0 },
 	{ 0x8879F378, sub_8879F378 },
 	{ 0x8879F5A0, sub_8879F5A0 },

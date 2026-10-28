@@ -11395,14 +11395,6 @@ DEFINE_REX_FUNC(sub_8226E308) {
 	return;
 }
 
-DEFINE_REX_FUNC(sub_8226E6E4) {
-	REX_FUNC_PROLOGUE();
-	// li r3,24
-	ctx.r3.s64 = 24;
-	// blr 
-	return;
-}
-
 DEFINE_REX_FUNC(sub_82272558) {
 	REX_FUNC_PROLOGUE();
 	// lwz r10,64(r3)

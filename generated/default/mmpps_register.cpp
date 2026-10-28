@@ -5457,10 +5457,6 @@ void mmpps_RegisterFunctions(rex::runtime::IModuleRegistrar* registrar) {
   registrar->SetFunction(0x8226E528, sub_8226E528);
   registrar->SetFunction(0x8226E530, sub_8226E530);
   registrar->SetFunction(0x8226E6CC, sub_8226E6CC);
-  registrar->SetFunction(0x8226E6D4, sub_8226E6D4);
-  registrar->SetFunction(0x8226E6DC, sub_8226E6DC);
-  registrar->SetFunction(0x8226E6E4, sub_8226E6E4);
-  registrar->SetFunction(0x8226E6EC, sub_8226E6EC);
   registrar->SetFunction(0x8226E6F4, sub_8226E6F4);
   registrar->SetFunction(0x8226E6FC, sub_8226E6FC);
   registrar->SetFunction(0x8226E790, sub_8226E790);
