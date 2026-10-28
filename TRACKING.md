@@ -72,3 +72,35 @@ playtest (ground truth to fill the mode table in AGENTS.md).
 
 **Status:** gate green, build in flight. Next: build → run double-check of
 `trap_allowlist.txt` staleness (still empty) → first playtest.
+
+## Iteration 3 — first-build compile errors: block-splitting hint misseeds (2026-10-27)
+
+**Scope:** first host build (937-target compile) surfaced a failure class the
+embedded-trap gate cannot see: `use of undeclared label 'loc_8805D7E4'` in
+`generated/MPD700/mmpps_recomp.8.cpp:12727` (a `bdz` bounds-check branch).
+
+- Root cause: a **hint seed splitting an intra-function block tail STEMICE**.
+  `0x8805D7E4` is the `bdz`/`beq` loop-tail target **inside**
+  `sub_8805D6E8` (confirmed: the pre-hint baseline emitted both targets as
+  plain local `goto loc_8805D7E4` with the label present). The static hint
+  pass (XenonRecomp gap-fill head) seeded it, so the analyzer made it a
+  function head: the block moved into `sub_8805D7E4`'s body and the brancher
+  now emits goto to a label that no longer exists **in its file**. No `bl`
+  anywhere targets these heads — they are misseeds, the same "drop
+  gap-fill misidentifications" class the hint script already handles for
+  STUB emissions, but compile-error-visible rather than STUB-visible.
+- All sites found by a tree-wide dangling-label scan (`goto loc_X` without
+  `loc_X:` in the same file): 6 (shell `0x8226E6D4/DC/E4/EC` family,
+  MPD700 `0x8805D7E4`, MPD710 `0x8879F264`). Every one verified as a local
+  label in the pre-hint baseline (`c6d34c8`), none has a genuine call
+  reference → all 6 seeds dropped from the hints TOMLs, codegen rerun.
+  Scan result after the drop: **0 dangling labels**.
+- `scripts/validate_codegen.ps1` gained the scan as a permanent check class
+  (`dangling_label`) — these failures otherwise only surface as compile
+  errors during a full build. Negative-tested (synthetic `goto loc_DEADBEEF`
+  → gate exit 1). Script perf: the first two scan implementations were
+  O(n²) (array `+=` reallocation at ~148k shell refs); final per-file
+  hashtable version runs the whole gate in <10 s.
+- Gate re-run: **code validation OK** (allowlist still empty, 488
+  informational switch-traps).
+- Status: gate green + committed (`563bb88`); rebuild in flight.
