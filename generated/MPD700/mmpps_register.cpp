@@ -5,6 +5,10 @@
 #include "mmpps_init.h"
 #include <rex/system/function_dispatcher.h>
 
+// Dispatch table handed to this module by the runtime (PPCImageInfo).
+// Host memory; see the generated REX_LOOKUP_FUNC macro.
+::PPCFunc** rex_function_table = nullptr;
+
 
 #ifdef _WIN32
 #define REX_MODULE_EXPORT __declspec(dllexport)

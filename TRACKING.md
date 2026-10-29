@@ -178,3 +178,64 @@ now, so only table-vs-table (+ code-vs-code) collision checks remain
 (1482/1501/1601/1611/1662 functions registered, zero overlap errors, no
 `[critical]`) — the shell boots and idles rendering (15+ min session
 observed). Awaiting UI-side mode entry playtest.
+
+## Iteration 5 - crash diagnosis: dispatch table overwritten by the next module image (2026-10-29)
+
+**Symptom:** every launch died with `0xC0000005` (DEP execute) at the *same*
+host address `0xB2B00007981`, ~26-60 s after boot, in module `unknown`.
+Reproduced 5/5 runs (also pre-mirror, so unrelated to the Iteration-4 fix).
+
+**Diagnosis (WER LocalDumps + procdump full dump + a Python minidump reader):**
+
+- Crash thread stack, innermost frame `mmpps_MPD700.DLL+0x13FADE`. Disassembly
+  of that site is the generated indirect-call sequence: guest jump-table word
+  -> bounds check -> `mov rax, [rdx + rax]` (dispatch slot) -> `call rax`.
+- Crash registers: `RDI`/`RDX` = `0x200000000` (arena base), guest target
+  (ctx+0x48) = `0x88030430`, and the slot read was
+  `0x298770860` = `IMAGE_BASE+IMAGE_SIZE+0x10000000 + (0x88030430-0x88010000)*2`.
+- **The slot contained `0xB2B00007981` - MPD710 image bytes, not a function
+  pointer** - even though `0x88030430` IS registered (`SetFunction(0x88030430,
+  sub_88030430)` in `generated/MPD700/mmpps_register.cpp`, "1482 functions").
+- Root cause: **the 0x90000000-0x9FFFFFFF window is not separate storage.**
+  `xmemory.cpp`'s `map_info` maps *both* the 0x80000000-0x8FFFFFFF (64 KB
+  pages) and 0x90000000-0x9FFFFFFF (4 KB pages) views from the **same file
+  offset 0x80000000** - it is the Xbox 360's 4 KB alias of XEX memory. The
+  dump confirms it: guest `0x88730000` and `0x98730000` are byte-identical,
+  including MPD710's `MZ` image header at `0x88740000`/`0x98740000`.
+  So the Iteration-4 "mirror" was a no-op on real storage: MPD700's table
+  still landed at `0x88730000`, and when **MPD710's image was loaded at
+  `0x88740000`, it overwrote every table slot from guest `0x88018000` up** -
+  including the slot for `0x88030430` (table+0x40860 = image+0x30860).
+  An indirect call to that (correctly registered) function then jumped through
+  MPD710 image data. Pre-mirror and post-mirror runs share the exact storage,
+  hence the identical fault address.
+
+**Fix (SDK fork): dispatch tables moved to HOST memory.**
+
+- `PPCImageInfo` gains `::PPCFunc*** function_table` (address of the module's
+  generated `rex_function_table` pointer); `init_cpp.inja` sets
+  `.function_table = &rex_function_table`, `register_cpp.inja` defines the
+  global per binary.
+- `_indirect_call.inja`: `REX_LOOKUP_FUNC(x, y)` now indexes
+  `rex_function_table[(u32(y) - REX_CODE_BASE) >> 2]` (one 8-byte slot per 4
+  bytes of guest code) - no guest address arithmetic, no `REX_TABLE_DELTA`.
+- `Memory::InitializeFunctionTable` allocates `new PPCFunc*[slots]()`
+  (zero-initialised) and returns it; `SetFunction` writes the host table;
+  `DestroyFunctionTable` `delete[]`s it. `FunctionDispatcher` hands the table
+  back via an out-param and drops all table/image overlap checks (host tables
+  cannot collide; only guest code-range overlap is still checked).
+- `runtime.cpp` (entrypoint) and `kernel_state.cpp` (user modules) publish the
+  table through `PPCImageInfo::function_table` before any recompiled code runs.
+- Registered-but-not-yet-called slots are now guaranteed zero, so an
+  unregistered in-bounds indirect target takes the `ResolveIndirectFunction`
+  fallback (logs the guest address) instead of jumping through image bytes.
+
+**Status:** regenerated all six targets, gate green, rebuild in flight.
+
+> **Correction (Iteration 5):** the table-mirror described above did **not**
+> actually separate the table from module images ? the 0x90000000 window is
+> the 4 KB alias of the same XEX storage (`map_info` maps both views from file
+> offset 0x80000000). The co-residency load fix is real (overlap checks no
+> longer reject adjacent images), but the crash it appeared to fix was only
+> suppressed until MPD710's image load overwrote the table. Iteration 5 has
+> the real fix (host-memory tables).

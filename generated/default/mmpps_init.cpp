@@ -17,6 +17,7 @@ const rex::PPCImageInfo PPCImageConfig = {
 
     .register_modules = RegisterRecompiledModules,
 
+    .function_table = &rex_function_table,
     .codegen_flags = {
         .skip_lr = false,
         .ctr_as_local = false,

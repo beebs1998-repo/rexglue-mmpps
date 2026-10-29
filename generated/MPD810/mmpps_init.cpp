@@ -13,6 +13,7 @@ const rex::PPCImageInfo PPCImageConfig = {
     .func_mappings = PPCFuncMappings,
     .rexcrt_heap = REXCRT_HEAP,
 
+    .function_table = &rex_function_table,
     .codegen_flags = {
         .skip_lr = false,
         .ctr_as_local = false,
