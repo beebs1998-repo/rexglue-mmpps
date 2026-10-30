@@ -293,3 +293,43 @@ unresolved), rebuilt, relaunched - all five modules register, MMP and Pink
 Sweets sides playable. Tooling added under `out/tools/` (gitignored):
 `map800.py` (symbol map from `ReXModule_Register`), `trap_ctx.py` (trap
 context/stack from a dump), `verify_jumptables.py` (table cross-check).
+
+## Iteration 7 - first full playtest: both sides clean, deferred questions closed (2026-10-30)
+
+**Result:** Muchi Muchi Pork side (all modes) and Pink Sweets side (base +
+'11 Cave Arrange) both play clean - no crashes, no `[critical]` lines, clean
+window-close shutdown (`Execution complete` / `Title terminated`).
+
+**Log ground truth (`logs/mmpps.log`, 09:21:49-09:29:53):**
+
+- **All five modules load at boot, once, and are never unloaded** - five
+  `XexLoadImage('game:\MPD7xx/8xx.bin'): no existing module, loading fresh`
+  lines inside ~150 ms, zero `UnloadUserModule` / `XexUnloadImage` lines for
+  the whole session. Confirms the Iteration-4 co-residency finding: MMPPS needs
+  no base-overlap swap hook, and the host-memory dispatch tables (Iteration 5)
+  are the right shape for it.
+- Registered function counts unchanged: 1482 / 1501 / 1601 / 1611 / 1662.
+- Three achievements fired (`XGIUserWriteAchievements` ids 0x1A, 0x30, 0x01).
+- Only recurring noise: `GetProcAddress(004/005): ordinal out of bounds` +
+  `XexGetProcedureAddress ordinal 5/6 not found` per module (non-fatal, as
+  recorded in Iteration 4), and one SDL `gamecontrollerdb.txt` notice.
+
+**Deferred questions closed:**
+
+- **`game:\MPD300/310/311/312.bin` never surface.** No `MPD3xx` string, mount
+  or open attempt anywhere in the session log, on either side. As expected
+  (same class as dfkr's `dat170.bin`): the path table entry is dead code for
+  these builds. No manifest change needed.
+- **`mkp:\DLC1000.bin` is never touched.** No `mkp` mount, no
+  `XexLoadImage`, no failed-open for the DLC container in the whole session,
+  with the extracted package sitting in `user_data/0000000000000000/...`.
+  Per AGENTS.md this stays deferred - do not spend time on the container until
+  a log actually shows the shell reaching for it.
+- **Save path works.** `SYSTEM.DAT\SYSTEM.DAT` was written (36,520 B) at
+  09:29:12, the same instant as
+  `[NtCreateFile] FAILED: path='save:\SYSTEM.DAT' -> 0xc000000f`. The guest
+  probes the bare package path first and then resolves the real file inside
+  the directory package, so the warning is benign noise, not a failed save.
+
+**Status:** project playable end to end. No open defects; the remaining
+backlog items are the deferred DLC container and cosmetic log noise.

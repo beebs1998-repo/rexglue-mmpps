@@ -93,8 +93,9 @@ the SDK's VFS resolution:
 
 The entrypoint also references `game:\MPD300/310/311/312.bin`
 (path-string table at ≈`0xB7574`, three 4-file groups 1xx/2xx/3xx). Same
-class of finding as dfkr's `dat170.bin` — expected to simply never surface;
-confirm at first playtest and record in TRACKING.md.
+class of finding as dfkr's `dat170.bin` — **confirmed never surfaced**
+(Iteration 7 full playtest, both sides, all modes: no `MPD3xx` open/mount
+anywhere in the log). Dead path-table entries for these builds.
 
 Also present: `game_data/AvatarAssetPack` and `game_data/nxeart` (dashboard
 assets, untouched).
@@ -137,11 +138,13 @@ payload is a custom container:
   section (futari iter-23 lesson).
 
 Do NOT spend time on this until the first playtest shows the shell actually
-doing an `XexLoadImage` (or a failed mount) on `mkp:\DLC1000.bin`. If it
-turns out to be a loadable module, extract properly (xextool GUI or manual
-FFI work), add it to `mmpps_manifest.toml` (its base `0x88000000` overlaps
-`MPD700` — check the collision policy with the runtime first) and
-regenerate.
+doing an `XexLoadImage` (or a failed mount) on `mkp:\DLC1000.bin`. **Iteration 7
+playtest (both sides, all modes): never touched** — no `mkp` mount, no
+`XexLoadImage`, no failed-open, with the extracted package present in
+`user_data/`. Still deferred. If it turns out to be a loadable module, extract
+properly (xextool GUI or manual FFI work), add it to `mmpps_manifest.toml` (its
+base `0x88000000` overlaps `MPD700` — check the collision policy with the
+runtime first) and regenerate.
 
 ## Layout
 
