@@ -333,3 +333,19 @@ window-close shutdown (`Execution complete` / `Title terminated`).
 
 **Status:** project playable end to end. No open defects; the remaining
 backlog items are the deferred DLC container and cosmetic log noise.
+
+### Housekeeping - crash-dump capture removed (2026-10-30)
+
+The 3.5 GB dumps used for the Iteration-5/6 triage came from a **machine-level
+WER setting**, not from the project:
+`HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps\mmpps.exe`
+(`DumpFolder=logs\dumps`, `DumpType=2` = full memory, `DumpCount=3`). That key
+has been deleted, and the accumulated dumps (10.8 GB) removed from `logs\dumps`.
+Nothing in the repo, `launch.bat`, `mmpps.toml`, CI or the SDK fork enables dump
+writing - the SDK has no `MiniDumpWriteDump`/unhandled-exception dump path at
+all (only a guest export stub for `SetUnhandledExceptionFilter`), so a normal
+crash now just produces the usual Windows "Application Error" event plus the
+`[error]`/`[critical]` lines in `logs/mmpps.log`.
+
+To re-enable for a future crash hunt, recreate that key with
+`DumpFolder`/`DumpType`/`DumpCount`, and delete it again afterwards.
