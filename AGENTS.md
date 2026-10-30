@@ -309,5 +309,18 @@ re-disabled for auto-codegen). Document SDK-side changes in `TRACKING.md`.
   recompiler's `__builtin_trap()` — usually a truncated jump table
   (`[[switch_tables]]` override class, see futari AGENTS "Crash diagnostics
   playbook" for the full recipe incl. the VA-layout image extraction trick).
+- **Release module DLLs are stripped** (`llvm-nm` says "no symbols"), so a host
+  RVA has to be mapped to a guest function by hand. Disassemble the exported
+  `ReXModule_Register` (`llvm-objdump -d --start-address=0x180001000
+  --stop-address=<ReXModule_GetImageInfo>`): every
+  `registrar->SetFunction(0xGUEST, sub_GUEST)` is a `leaq <sub>(%rip), %r8`
+  followed by `movl $0xGUEST, %edx`, which recovers the full host->guest
+  function map (1611/1611 for MPD800). Then bisect the fault RVA into it.
+- `[[switch_tables]]` entries are keyed by the **`bctr` instruction address**
+  (`JumpTable::bctrAddress`), not by the jump-table address; `register` is the
+  index register (e.g. `register = 5` for `switch (ctx.r5.u32)`). A mis-detected
+  table typically shows up as a `switch` with a single bogus case whose
+  operand is the *table-base* register — grep the generated code for
+  `Switch case out of range` and check the case count and switch register.
 - For crash triage against module ranges: fall back on this project's module
   base table (guest range → which `mmpps_MPD*.dll`).

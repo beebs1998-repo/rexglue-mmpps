@@ -239,3 +239,57 @@ Reproduced 5/5 runs (also pre-mirror, so unrelated to the Iteration-4 fix).
 > longer reject adjacent images), but the crash it appeared to fix was only
 > suppressed until MPD710's image load overwrote the table. Iteration 5 has
 > the real fix (host-memory tables).
+
+## Iteration 6 - Pink Sweets side: UD2 in MPD800 from a mis-detected jump table (2026-10-30)
+
+**Symptom:** MMP side playtested clean (all modes). Switching to the Pink Sweets
+side killed the process with `0xC000001D` (illegal instruction) in
+`mmpps_MPD800.dll+0x263ECE` - a new signature, not the Iteration-5 DEP fault.
+
+**Diagnosis:**
+
+- WER dump + the Iteration-5 minidump tooling: the fault is the recompiler's
+  own `ud2` for `Switch case out of range` (`build_bctr` default arm), i.e. a
+  generated `bctr` jump-table dispatch, not a bad indirect call.
+- The release DLLs are stripped (`llvm-nm`: "no symbols"), so the host->guest
+  map was reconstructed by disassembling the exported `ReXModule_Register`
+  (every `registrar->SetFunction(0xGUEST, sub_GUEST)` shows up as
+  `leaq <sub>(%rip), %r8` + `movl $0xGUEST, %edx`). 1611/1611 entries recovered.
+  Fault `0x180263ECE` -> guest `0x8993B998` + `0x7E`.
+- `generated/MPD800/mmpps_recomp.8.cpp` `sub_8993B998`: guest code is
+  `lwzx r5,r9,r8` (per-entry word) -> `rlwinm r4,r5,2` -> `lwzx r11,r4,r6`
+  (jump table at `0x89A8F6D0`) -> `mtctr r11` -> `bctr` at `0x8993B9C4`.
+  The auto-detected table used **r6 (the table-base register) as the index**
+  and produced a single bogus case, so the emitted `switch` compared
+  `0x89A8F6D0` against `0` and always fell into `__builtin_trap()`.
+- The real table (read out of the dump at guest `0x89A8F6D0`) has **33
+  entries**: `[0]=0x8993B9C8`, `[1..9]=0x8993BB00`, `[10..15]=0x8993B9C8`,
+  `[16..31]=0x8993BC68`, `[32]=0x8993BFF8`, `[33]=0` (terminator).
+- The same defect exists in **MPD810** (Pink Sweets '11 Cave Arrange):
+  `sub_8A01CE50`, `bctr` at `0x8A01CE7C`, table `0x8A16F6A8`, same 33-entry
+  shape. It had not been reached yet - it would have crashed identically.
+
+**Fix (project-side `[[switch_tables]]` overrides, no SDK change):**
+
+- `mmpps_MPD800_functions.toml`: `address = 0x8993B9C4`, `register = 5`,
+  33 labels.
+- `mmpps_MPD810_functions.toml`: `address = 0x8A01CE7C`, `register = 5`,
+  33 labels.
+- (`[[switch_tables]].address` is the **bctr instruction address**
+  - `JumpTable::bctrAddress` - not the table address; `register` is the index
+  register. All 8 target functions were already registered.)
+
+**Sweep for the same class:** of the 488 `switch_trap` sites, exactly two had
+<=1 case (the two above) and none had a constant-written index register. A
+full cross-check (resolve each site's table base from the generated `lwzx`,
+read the guest table from the dump, compare contiguous valid entries with the
+emitted case count) found **no real mismatch**; the single flagged site
+(MPD790 `0x8921ED34`, 15 cases vs 16 valid words) is a false positive - the
+guest does `cmplwi cr6,r10,14` + `bgtlr cr6` before dispatching, so index 15
+is unreachable by construction.
+
+**Status:** regenerated, gate green (488 informational switch sites, 0
+unresolved), rebuilt, relaunched - all five modules register, MMP and Pink
+Sweets sides playable. Tooling added under `out/tools/` (gitignored):
+`map800.py` (symbol map from `ReXModule_Register`), `trap_ctx.py` (trap
+context/stack from a dump), `verify_jumptables.py` (table cross-check).

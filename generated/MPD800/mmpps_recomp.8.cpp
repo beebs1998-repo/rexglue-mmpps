@@ -6337,9 +6337,105 @@ DEFINE_REX_FUNC(sub_8993B998) {
 	// mtctr r11
 	ctx.ctr.u64 = ctx.r11.u64;
 	// bctr 
-	switch (ctx.r6.u32) {
+	switch (ctx.r5.u32) {
 	case 0:
 		sub_8993B9C8(ctx, base);
+		return;
+	case 1:
+		sub_8993BB00(ctx, base);
+		return;
+	case 2:
+		sub_8993BB00(ctx, base);
+		return;
+	case 3:
+		sub_8993BB00(ctx, base);
+		return;
+	case 4:
+		sub_8993BB00(ctx, base);
+		return;
+	case 5:
+		sub_8993BB00(ctx, base);
+		return;
+	case 6:
+		sub_8993BB00(ctx, base);
+		return;
+	case 7:
+		sub_8993BB00(ctx, base);
+		return;
+	case 8:
+		sub_8993BB00(ctx, base);
+		return;
+	case 9:
+		sub_8993BB00(ctx, base);
+		return;
+	case 10:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 11:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 12:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 13:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 14:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 15:
+		sub_8993B9C8(ctx, base);
+		return;
+	case 16:
+		sub_8993BC68(ctx, base);
+		return;
+	case 17:
+		sub_8993BC68(ctx, base);
+		return;
+	case 18:
+		sub_8993BC68(ctx, base);
+		return;
+	case 19:
+		sub_8993BC68(ctx, base);
+		return;
+	case 20:
+		sub_8993BC68(ctx, base);
+		return;
+	case 21:
+		sub_8993BC68(ctx, base);
+		return;
+	case 22:
+		sub_8993BC68(ctx, base);
+		return;
+	case 23:
+		sub_8993BC68(ctx, base);
+		return;
+	case 24:
+		sub_8993BC68(ctx, base);
+		return;
+	case 25:
+		sub_8993BC68(ctx, base);
+		return;
+	case 26:
+		sub_8993BC68(ctx, base);
+		return;
+	case 27:
+		sub_8993BC68(ctx, base);
+		return;
+	case 28:
+		sub_8993BC68(ctx, base);
+		return;
+	case 29:
+		sub_8993BC68(ctx, base);
+		return;
+	case 30:
+		sub_8993BC68(ctx, base);
+		return;
+	case 31:
+		sub_8993BC68(ctx, base);
+		return;
+	case 32:
+		sub_8993BFF8(ctx, base);
 		return;
 	default:
 		__builtin_trap(); // Switch case out of range

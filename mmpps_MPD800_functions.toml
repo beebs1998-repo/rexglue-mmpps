@@ -23,3 +23,48 @@ name = "sub_899d6d88"
 name = "sub_899d6de4"
 
 
+
+# Iteration 6 - Pink Sweets side died with 0xC000001D (UD2) in mmpps_MPD800.dll
+# at guest 0x8993B998+0x7E. The bctr at 0x8993B9C4 dispatches through the
+# 33-entry jump table at 0x89A8F6D0, indexed by r5 (a word loaded from the
+# per-entry struct at 0x89A26234 + idx*696). Auto-detection picked the
+# table-base register (r6 = 0x89A8F6D0) as the index and emitted a single
+# bogus case, so the generated switch always fell into __builtin_trap().
+[[switch_tables]]
+address = 0x8993B9C4
+register = 5
+labels = [
+    0x8993B9C8,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993BB00,
+    0x8993B9C8,
+    0x8993B9C8,
+    0x8993B9C8,
+    0x8993B9C8,
+    0x8993B9C8,
+    0x8993B9C8,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BC68,
+    0x8993BFF8,
+]

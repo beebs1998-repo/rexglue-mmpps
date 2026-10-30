@@ -23,3 +23,45 @@ name = "sub_8a0badd8"
 name = "sub_8a0bae34"
 
 
+
+# Iteration 6 - same defect as MPD800 (Pink Sweets base ver): bctr at
+# 0x8A01CE7C dispatches through the 33-entry jump table at 0x8A16F6A8,
+# indexed by r5; auto-detection used r6 (table base) and a single bogus case.
+[[switch_tables]]
+address = 0x8A01CE7C
+register = 5
+labels = [
+    0x8A01CE80,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CFB0,
+    0x8A01CE80,
+    0x8A01CE80,
+    0x8A01CE80,
+    0x8A01CE80,
+    0x8A01CE80,
+    0x8A01CE80,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D1C8,
+    0x8A01D3E8,
+]
